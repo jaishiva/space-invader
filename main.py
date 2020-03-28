@@ -26,6 +26,7 @@ def player():
 # enemy
 class enemy():
     enemyimg = pygame.image.load('space-ship.png')
+    was_hit = False
     def __init__(self,x,y):
         self.enemyx = x
         self.enemyy = y
@@ -51,30 +52,17 @@ bulletimg = pygame.image.load('bullet.png')
 bulletx = 0
 y = 500
 bullet_state = False
+score = 0
 def bullet(x):
     window.blit(bulletimg,(x+15,y))
 
 # is collision
-def isCollision(bulletx,bullety,enemyx,enemyy):
-    if math.sqrt(math.pow(bulletx-enemyx,2)+math.pow(bullety-enemyy,2)) < 27:
+def isCollision(x,y,enemyx,enemyy):
+    if math.sqrt(math.pow(x-enemyx,2)+math.pow(y-enemyy,2)) < 32:
         return True
     else:
         return False
 
-def reorder(cor):
-    x=0
-    if cor == 736:
-        for row in range(rows):
-            for col in reversed(range(cols)):
-                enemies[row][col].enemyx == 736-x
-                enemies[row][col].enemyy += 10
-                x += 64
-    else:
-        for row in range(rows):
-            for col in range(cols):
-                enemies[row][col].enemyx == x
-                enemies[row][col].enemyy += 10
-                x += 64
 
 def move_enemy():
     global change_enemy
@@ -120,15 +108,25 @@ while running:
         move_enemies_down()
     move_enemy()
 
-          
-                
-    
-    # if y > 0 and bullet_state:
-    #     y-=20
-    #     bullet(x)
-    # else:
-    #     bullet_state = False  
-    #     y = 500
+    if y > 0 and bullet_state:
+        y-=20
+        bullet(x)
+    else:
+        bullet_state = False  
+        y = 500
+
+
+    # detect collision
+    for row in range(rows):
+        for col in range(cols):
+            if not enemies[row][col].was_hit and isCollision(x,y,enemies[row][col].enemyx,enemies[row][col].enemyy):
+                score += 1
+                enemies[row][col].was_hit = True
+                print(score)
+                bullet_state = False  
+                y = 500
+                enemies[row][col].enemyimg=pygame.Surface((64,64), pygame.SRCALPHA)
+                # enemies[row][col].enemyimg.fill((255,255,255,128))
     player()
-    # enemy()
+
     pygame.display.update()
