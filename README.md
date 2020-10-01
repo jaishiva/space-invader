@@ -1,3 +1,21 @@
 # space-invader
+
 classic space invader game
-Use keyboard left and right to move the space ship and space to shoot
+
+## Modules used 
+
+```bash
+os
+random
+pygame 
+random
+math
+```
+
+## Controls
+
+```
+Press 'Space bar' of keyboard to shoot
+Press 'Left button' to move left
+Press 'Right button' to move right
+```
